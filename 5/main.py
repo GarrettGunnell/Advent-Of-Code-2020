@@ -9,7 +9,6 @@ for line in inputLines:
     input.append(line)
 
 def silver(input):
-    string = 'FBFBBFFRLR'
     row_range = [0, 127]
     col_range = [0, 7]
     highestID = 0
