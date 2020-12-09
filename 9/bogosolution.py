@@ -11,5 +11,6 @@ for line in inputLines:
 while True:
     start = random.randint(0, len(input) - 1)
     end = random.randint(start, len(input) - 1)
+    if len(input[start:end]) < 2: continue
     if sum(input[start:end]) == 1398413738:
         exit(print(min(input[start:end]) + max(input[start:end])))
