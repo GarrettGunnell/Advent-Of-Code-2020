@@ -1,50 +1,62 @@
-import copy
-from remainder import chinese_remainder
-
 inputFile = open('input.txt', 'r')
 inputLines = inputFile.readlines()
 
 input = []
 for line in inputLines:
     line = line.strip()
-    input.append(line.split(','))
+    input.append(line.split())
 
 def silver(input):
-    busID = int(input[0][0])
-    schedule = input[1:]
-    times = []
-    
-    for i in schedule[0]:
-        if i == 'x':
-            continue
-        departure = 0
-        while departure <= int(busID):
-            departure += int(i)
+    mask = ''
+    memory = {}
+    for line in input:
+        if line[0] == 'mask':
+            mask = line[2]
+        else:
+            binary = str(bin(int(line[2])))[2:].rjust(36, '0')
+            output = ''
+            for i in range(len(mask)):
+                output = output + binary[i] if mask[i] == 'X' else output + mask[i]
 
-        times.append([departure, int(i)])
+            address = ''
+            for i in range(4, len(line[0])):
+                if line[0][i] == ']': break
+                else: address += line[0][i]
 
-    minTime = times[0][0]
-    minID = times[0][1]
-    for i in times:
-        time = i[0]
-        if time < minTime:
-            minTime = time
-            minID = i[1]
+            memory[int(address)] = int(output, 2)
 
-    return (minTime - busID) * minID
+    return sum(memory.values())
 
 def gold(input):
-    schedule = input[1:][0]
-    IDs = []
-    times = []
+    mask = ''
+    memory = {}
+    for line in input:
+        if line[0] == 'mask':
+            mask = line[2]
+        else:
+            address = ''
+            for i in range(4, len(line[0])):
+                if line[0][i] == ']': break
+                else: address += line[0][i]
+            
+            address = str(bin(int(address)))[2:].rjust(36, '0')
+            addresses = ['']
+            for i in range(len(mask)):
+                if mask[i] == 'X':
+                    for j in range(len(addresses)):
+                        addresses.append(addresses[j] + '1')
+                        addresses[j] += '0'
+                elif mask[i] == '0':
+                    for j in range(len(addresses)):
+                        addresses[j] += address[i]
+                elif mask[i] == '1':
+                    for j in range(len(addresses)):
+                        addresses[j] += '1'
 
-    for i in range(len(schedule)):
-        bus = schedule[i]
-        if bus == 'x': continue
-        IDs.append(int(bus))
-        times.append(-i)
+            for i in addresses:
+                memory[int(i, 2)] = int(line[2])
 
-    print(chinese_remainder(IDs, times))
+    return sum(memory.values())
 
 print(silver(input))
 print(gold(input))
