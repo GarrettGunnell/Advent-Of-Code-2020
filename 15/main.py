@@ -21,11 +21,7 @@ def silver(input):
     while turn != 2020:
         turn += 1
         last_spoken = last_difference
-        if last_spoken in spoken:
-            last_difference = turn - spoken[last_spoken]
-        else:
-            last_difference = 0
-
+        last_difference = turn - spoken[last_spoken] if last_spoken in spoken else 0
         spoken[last_spoken] = turn
 
     return last_spoken
@@ -44,11 +40,7 @@ def gold(input):
     while turn != 30000000:
         turn += 1
         last_spoken = last_difference
-        if last_spoken in spoken:
-            last_difference = turn - spoken[last_spoken]
-        else:
-            last_difference = 0
-
+        last_difference = turn - spoken[last_spoken] if last_spoken in spoken else 0
         spoken[last_spoken] = turn
 
     return last_spoken
